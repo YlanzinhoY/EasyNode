@@ -8,9 +8,9 @@ import (
 
 func CreateNodeApp() {
 
-	npmRun()
-	createFiles()
-
+	npmRun()	
+	createFiles()	
+	
 }
 
 func npmRun() {
@@ -40,7 +40,6 @@ func createFiles() {
 		"dockerfile",
 		"docker-compose.yml",
 		".gitignore",
-		"Prettier",
 	}
 
 	for _, createFile := range files {
