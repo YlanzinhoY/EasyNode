@@ -8,9 +8,9 @@ import (
 
 func CreateNodeApp() {
 
-	npmRun()	
-	createFiles()	
-	
+	npmRun()
+	createFiles()
+
 }
 
 func npmRun() {
@@ -40,6 +40,7 @@ func createFiles() {
 		"dockerfile",
 		"docker-compose.yml",
 		".gitignore",
+		"init.md",
 	}
 
 	for _, createFile := range files {
@@ -49,7 +50,15 @@ func createFiles() {
 			panic("erro")
 		}
 
-		err = os.WriteFile(".gitignore", []byte("/node_modules"), os.ModePerm)
+		ignore := `\node_modules 
+.env
+`
+		err = os.WriteFile(".gitignore", []byte(ignore), os.ModePerm)
+
+		if err != nil {
+			panic("erro bugado")
+		}
+		err = os.WriteFile("init.md", []byte(readmeFile()), os.ModePerm)
 
 		if err != nil {
 			panic("erro bugado")
@@ -62,4 +71,11 @@ func createFiles() {
 		}
 
 	}
+}
+
+func readmeFile() string {
+
+	file := "- Para iniciar o server.ts basta utilizar o comando `npx tsx server.ts` "
+	return file
+
 }
