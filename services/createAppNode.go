@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 )
 
 func CreateNodeApp() {
@@ -21,7 +22,15 @@ func npmRun() {
 	}
 
 	for _, command := range commands {
-		cmd := exec.Command("powershell", "-Command", command)
+
+		var cmd *exec.Cmd
+
+		if runtime.GOOS == "windows" {
+			cmd = exec.Command("powershell", "-Command", command)
+		} else {
+			cmd = exec.Command("bash", "-c", command)
+		}
+
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 
@@ -41,6 +50,7 @@ func createFiles() {
 		"docker-compose.yml",
 		".gitignore",
 		"init.md",
+		".env.example",
 	}
 
 	for _, createFile := range files {

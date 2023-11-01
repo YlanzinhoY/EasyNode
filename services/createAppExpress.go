@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 )
 
 func CreateExpressApp() {
@@ -14,14 +15,22 @@ func CreateExpressApp() {
 		"npm i dotenv",
 	}
 
-	for _, comand := range comands {
-		cmd := exec.Command("powershell", "-Command", comand)
+	for _, command := range comands {
+
+		var cmd *exec.Cmd
+
+		if runtime.GOOS == "windows" {
+			cmd = exec.Command("powershell", "-Command", command)
+		} else {
+			cmd = exec.Command("bash", "-c", command)
+		}
+
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 
 		err := cmd.Run()
 		if err != nil {
-			panic("erro ao rodar o coamando")
+			panic("erro ao rodar o comando")
 		}
 	}
 
@@ -30,6 +39,7 @@ func CreateExpressApp() {
 }
 
 func createServerTs() {
+
 	file, err := os.Create("server.ts")
 
 	if err != nil {
